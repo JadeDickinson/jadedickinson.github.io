@@ -1,1 +1,77 @@
-Hello World
+You Build It You Run It - What is Site Reliability? - Jade Dickinson - Spring 2020
+
+In this blog post I’ll cover what site reliability engineers do, why your team might need to start doing site reliability, and consider how you can do it in a way that will scale with your engineering team. Finally, I’ll cover ways SRE can go wrong and ideas for making this better.
+
+What do Site Reliability Engineers do?
+In short, Site Reliability Engineers (SREs) work to improve the reliability and performance of your system. They can be seen as a bridge between software engineering and DevOps.
+
+Having an on-call rota doesn’t necessarily mean you are doing site reliability engineering. So let’s think about the differences between Production Support, DevOps and Site Reliability Engineering. 
+
+They may sometimes do some Production Support - identifying which teams are responsible for bugs and passing them out to them - but ideally they will be more focused on working to improve things, rather than just reacting to incoming bugs. SREs tend to work more closely with application code than DevOps teams, although there’s often overlap seeing as both roles can involve some amount of on-call work.
+
+Why might you need to start doing Site Reliability Engineering?
+There’s two main reasons you might need to start doing Site Reliability Engineering:
+Your site feels slow and you want to speed it up
+You want to reduce your hosting costs.
+
+Both of these problems tend to hit at a certain point in an organisation’s lifespan. A small startup with a simple site and very few users isn’t going to be worried about this - and can probably serve all their users with minimal spend on hosting. As such, they aren’t going to need to look at performance issues in any real way. It’s when a site has become successful that they might experience rocketing hosting costs or the sort of slowness that causes customers to leave the site.
+
+At this point, the need to improve things tends to become obvious. Nate Berkopec refers to this buildup of problems as “performance debt”, comparing it to technical debt in that it can drastically slow down the building of new features, as teams have to spend huge amounts of time dealing with performance problems. It becomes obvious from the business perspective when you see elevated numbers of request timeouts, have a high hosting bill, or customers or internal users complain about how slow the app is.
+
+So the value you get from introducing site reliability engineering should be fairly quantifiable - you should start to see metrics around the speed of your site improve; you should expe
+
+How do you start doing site reliability?
+To start, you need two things - one or more engineers, and tools for monitoring the health of your system and tracking down problems. I’ll cover the tooling side of things further down - first let’s talk about your team.
+
+It sort of depends on how many engineers you have, and the extent of the problems you are currently experiencing. You also want to think about the ability to escalate issues when thinking about daytime SRE versus on-call rotas. For a 20-strong engineering team, it may be enough to put 2 of your engineers on site reliability duties, and rotate this around.
+
+Who should do site reliability duties?
+The decisions behind who does site reliability depend on what sorts of issues you care about during the day versus out of hours; and on the ability to escalate in the event of a site outage. During the workday, you probably don’t want your technical leads doing the SRE role, as this would take all of their time.
+
+However, if engineers on site reliability duty notice a really big problem, they should escalate quickly. In the event of a site outage, the first priority should always be bringing the site back up, so SREs should ask for help and this includes asking technical leads.
+
+The ability to fix big problems tends to inform who should be on an out-of-hours rota. During out-of-hours, there is a different priority. The focus will be on large-scale issues - the sorts that break critical parts of the system. So during out of hours, you might care if your payment system or some data import jobs go down - but you aren’t going to be worried about small numbers of low-impact errors. This can inform how you set up alerting thresholds as well.
+
+Because out-of-hours is focused on critical issues, it makes sense for the people who can opt into this role to be your most experienced engineers - your lead/principal engineers and in some cases your CTO. You wouldn’t want to have an engineer be on call and have to escalate to someone anyway - you want people on out-of-hours to be able to resolve even the most severe issues independently. This is because there’s no point having someone receive an alert overnight if they cannot quickly fix the problem themselves. In the event of an outage, you want your system to be brought back up quickly - so having an engineer on-call who then has to escalate to someone else merely delays the problem being fixed - potentially costing your organisation money while the site isn’t operational.
+
+Why how you do SRE will need to change as you scale your engineering team
+When Site Reliability Engineering is a new field at your organisation, it tends to involve a lot of manual work. It may even take in some aspects of production support - triaging incoming issues from Airbrake, Bugsnag or whatever error monitoring tool you are using, and handing these out to teams to fix.
+
+There’s a concept introduced in <Site Reliability Engineering: How Google Runs Production Systems>, “toil”, which should inform how you decide how many people to put on site reliability duty. They define it as “the kind of work running a production service that tends to be manual, repetitive, automatable, tactical, devoid of enduring value, and that scales linearly as a service grows”.
+
+Production support tends to be a very toil-heavy role. The work of handing out bugs tends to scale very linearly as your system and indeed, your engineering team grows.
+
+Examples of toil that an SRE might do include:
+Manually fixing something on a production server
+Handing out bugs to responsible teams
+Replaying events in a stateful system
+Manually scaling servers up or down
+Running a script that automates some task
+
+In contrast, engineering work in an SRE context is work that is novel, strategic, often creative, and improves your system in the long run. Google’s stated aim is that their SREs should spend 50% or less of their time doing operational work (aka toil), and 50% doing engineering work - improving system reliability, performance or utilization.
+
+How SRE can go wrong
+In my experience, as a team grows you will start to notice that toil is taking up too much time. This becomes obvious in two ways:
+Very little actual engineering work is done to improve your system
+Your engineers start complaining about being on site reliability and thinking of it as a chore
+
+On the other hand, when there’s a high ratio of engineering work to toil in the SRE role, it is a super interesting role and gives engineers a lot of opportunity to learn and be creative.
+
+So if the ratio of toil to engineering work is becoming overwhelming, what can you do? In short, you need to think carefully about how you do site reliability and how many people are doing the role at any one time.
+
+First - think about how many people are doing the site reliability role at a time. For a 20-strong engineering team, 2 site reliability engineers might be enough. In a much larger team, you may need more. I would actually say if the role is becoming mostly manual, that is the point at which you need more engineers doing the role.
+
+Next - think about how quickly SREs can track down the source of problems. The longer they spend on this, the less time is available to work on improving the system. At Microsoft, the rota for site reliability is within teams. At Google, SRE is its own discipline.
+
+In smaller engineering teams, your system architecture may make enough sense that you can put any engineer from any team on rotation, and they would be able to quickly figure out what area of the codebase is having problems. This has the added benefit of giving all engineers a good understanding of all areas of your codebase(s), letting them build skills in performance optimisation, and learn pattern recognition when dealing with production incidents. This also avoids siloing knowledge about how to keep your system operational in any single team.
+
+You also want to consider how many problems you are having - if your site is often on the edge of falling over, allocating one engineer to site reliability just doesn’t make sense. On the other hand, the more engineers you have per week, the greater the impact on product teams, which can make it difficult for teams. So this decision will be unique to each organisation. Perhaps for your organisation, forming a temporary squad of engineers to do daytime site reliability makes sense. You want to strike a balance between having enough engineers on site reliability to keep your site healthy; the stress levels of the engineers; and the capacity teams have to do product work. 
+
+If you’ve enjoyed this article, I’d love to hear about how your team does site reliability engineering and your experiences of it.
+
+
+
+References
+https://landing.google.com/sre/workbook/chapters/how-sre-relates/
+https://www.speedshop.co/2019/06/17/what-i-learned-teaching-rails-performance.html 
+
