@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Jul 2025 14:42:29 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Repertoire</title>
+      <link>http://localhost:1313/building-a-repertoire/</link>
+      <pubDate>Wed, 09 Jul 2025 14:42:29 +0100</pubDate>
+      <guid>http://localhost:1313/building-a-repertoire/</guid>
+      <description>&lt;p&gt;Inspired by my Granny&amp;rsquo;s decades old recipe scrapbook, this is a space to catalogue building my repertoire of home food favourites.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
