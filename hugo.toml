@@ -1,0 +1,20 @@
+baseURL = 'https://www.jadedickinson.com/'
+languageCode = 'en-gb'
+title = 'Jade Dickinson'
+theme = "hugo-theme-console"
+
+[[params.navlinks]]
+name = "home/"
+url = "/"
+
+[[params.navlinks]]
+name = "food writing/"
+url = "building-a-repertoire/"
+
+[[params.navlinks]]
+name = "technical talks/"
+url = "technical-talks/"
+
+[[params.navlinks]]
+name = "about/"
+url = "about/"
