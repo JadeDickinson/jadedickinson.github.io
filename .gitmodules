@@ -1,9 +1,3 @@
-[submodule "quickstart/themes/hugo-theme-consol"]
-	path = quickstart/themes/hugo-theme-consol
-	url = https://github.com/mrmierzejewski/hugo-theme-console.git
-[submodule "quickstart/themes/hugo-theme-console"]
+[submodule "themes/hugo-theme-console"]
 	path = quickstart/themes/hugo-theme-console
-	url = https://github.com/mrmierzejewski/hugo-theme-console.git
-[submodule "quickstart/hugo-theme-console"]
-	path = quickstart/hugo-theme-console
 	url = https://github.com/mrmierzejewski/hugo-theme-console.git
