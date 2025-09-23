@@ -7,3 +7,6 @@
 3. Edit hugo.toml, setting the "theme" property to the theme name.
 4. Create new content with the command "hugo new content <SECTIONNAME>/<FILENAME>.<FORMAT>".
 5. Start the embedded web server with the command "hugo server --buildDrafts".
+
+cd quickstart
+https://github.com/mrmierzejewski/hugo-theme-console
