@@ -23,4 +23,6 @@ Makes two portions, each 386 kcal / 43.9g protein / 23.5g fat.
 
 Serve with rice, greek yoghurt and shredded carrots and sliced red onions.
 
+Note - modifications are fat trimming the chicken, omitting the oil and sugar from the marinade, and omitting chilli powder since Tesco jalapenos have enough spice on their own.
+
 ![Chicken tikka marinade ](marinade.jpeg)
