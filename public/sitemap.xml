@@ -4,6 +4,13 @@
     
         
         <url>
+            <loc>http://localhost:1313/technical-talks/</loc>
+            <lastmod>2025-11-16T21:20:38+00:00</lastmod>
+        </url>
+        
+    
+        
+        <url>
             <loc>http://localhost:1313/building-a-repertoire/chicken-tikka/</loc>
             <lastmod>2025-11-16T21:05:52+00:00</lastmod>
         </url>
