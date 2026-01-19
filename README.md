@@ -6,6 +6,8 @@
    - Or, install a theme from https://themes.gohugo.io/
 3. Edit hugo.toml, setting the "theme" property to the theme name.
 4. Create new content with the command "hugo new content <SECTIONNAME>/<FILENAME>.<FORMAT>".
+e.g. hugo new content building-a-repertoire/sichuan-steamed-fish.md
+Export Google Doc to markdown and paste, remembering to check draft = false.
 5. Start the embedded web server with the command "hugo server --buildDrafts".
 
 cd quickstart
