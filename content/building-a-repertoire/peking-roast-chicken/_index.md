@@ -4,8 +4,6 @@ draft = false
 title = 'Peking Roast Chicken'
 +++
 
-Peking Roast Chicken
-
 I developed this recipe after we had some friends over after a much larger whole chicken arrived in our weekly food shop. It is inspired by Andrew Wong’s peking duck recipe and Pups with Chopsticks’ Peking Chicken recipe: [https://www.greatbritishchefs.com/recipes/peking-duck-recipe](https://www.greatbritishchefs.com/recipes/peking-duck-recipe) and [https://pupswithchopsticks.com/oven-roasted-five-spice-peking-chicken/](https://pupswithchopsticks.com/oven-roasted-five-spice-peking-chicken/). My aims were to try to get the chicken as dry as possible without much prep before roasting, like in Andrew Wong’s duck recipe; and to achieve a lacquered chicken skin with minimal basting steps.
 
 ![Peking Roast Chicken ](peking-chicken.jpeg)
