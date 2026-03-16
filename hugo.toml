@@ -4,15 +4,19 @@ title = 'Jade Dickinson'
 theme = "hugo-theme-console"
 
 [[params.navlinks]]
-name = "home/"
+name = "home"
 url = "/"
 
 [[params.navlinks]]
-name = "food writing/"
+name = "blog"
+url = "blog/"
+
+[[params.navlinks]]
+name = "food writing"
 url = "building-a-repertoire/"
 
 [[params.navlinks]]
-name = "technical talks/"
+name = "technical talks"
 url = "technical-talks/"
 
 [[module.imports]]
