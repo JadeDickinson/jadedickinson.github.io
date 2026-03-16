@@ -138,12 +138,19 @@ These are the rounds you might expect, below I’ll discuss.
 - [https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers](https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers)   
 - Take home tests
 
-Behaviourals are straightforward to prepare for, all you're doing is talking about work you've done in the past. They are a great opportunity to ask questions. In terms of looking for what you want in a role, this is super important. You can also get a good read on whether you’d want to work with the people who interview you. So ask questions and take notes.
+### Behaviourals 
+These are straightforward to prepare for, all you're doing is talking about work you've done in the past. They are a great opportunity to ask questions. In terms of looking for what you want in a role, this is super important. You can also get a good read on whether you’d want to work with the people who interview you. So ask questions and take notes.
 
-System design: there is a standard way to prepare. The guy who created a prep platform for this, Hello Interview, gave an ordered list based on the skills you need to learn and topics that come up [Evan @ Hello Interview's ordered list](https://www.reddit.com/r/leetcode/comments/1kt2b6z/how_to_prepare_for_system_design_interviews/). Exponent offers free peer-to-peer interviews, people use Excalidraw.
+### System design
+There is a standard way to prepare. The guy who created a prep platform for this, Hello Interview, gave an ordered list based on the skills you need to learn and topics that come up [Evan @ Hello Interview's ordered list](https://www.reddit.com/r/leetcode/comments/1kt2b6z/how_to_prepare_for_system_design_interviews/). Exponent offers free peer-to-peer interviews, people use Excalidraw.
 
-For Data Structures & Algorithms, I would advise using Blind 75, that is a short list of Leetcode problems. You want to write on paper before running your code (per Cracking the Coding Interview). You might get things that aren't exactly the same as problems you saw, but are adjacent, and the prep will still be helpful. For example I was asked to implement a linked list and then a sorted one and that was fine.
+### Data Structures & Algorithms
+I would advise using Blind 75, that is a short list of Leetcode problems. You want to write on paper before running your code (per Cracking the Coding Interview). You might get things that aren't exactly the same as problems you saw, but are adjacent, and the prep will still be helpful. For example I was asked to implement a linked list and then a sorted one and that was fine.
 
+### Pair coding
+Distinct from DS&A, demonstrate how you would work. My best recommendations are Tom Dalling's talk: https://www.youtube.com/watch?v=7cyx_88m2CM, the Guardian also has publicly released their exercises so you can use those as mocks: \+ [github.com/guardian/coding-exercises](http://github.com/guardian/coding-exercises)    
+
+### AI usage within interviews
 I would really recommend that you turn off Copilot. Former colleagues have seen candidates attempt to cheat on the call with AI but it was very obvious. You also have to bear in mind you will be asked not to use them in most cases, so it's just stupid to train with the tools on.
 
 Meta have started doing an additional LLM prompting exam. They are the exception. It's an emerging area; for example, one company at the very last minute decided not to have a pure coding test and instead asked me to read some code, which is fine, but something that I expect will continue to shift.
@@ -155,7 +162,7 @@ There is actually research that a live coding interview mimics Trier Social Stre
 
 Take home tests are the final possibility. The problem is that the assessment is very subjective. Carwow is a notable exception as at least when I was there the first review was an objective, does the take home submission make automated tests pass.
 
-## What if you're not looking right now
+## What if you're not looking right now?
 
 This is about assessing risk.
 
@@ -167,14 +174,15 @@ As you’ll have limited time, focus on your weak points, do that prep first. Ke
 
 - Time block and use a schedule  
 - Prep efficiently and balance your efforts
-- Don’t go it alone - if anyone's looking for a job right now, contact me, I'm very happy to help in any way that I can.
+- Don’t go it alone - anyone who's looking for a job right now, contact me, happy to help in any way that I can.
 
 ## References
 
-Practicalities: [https://www.cnbc.com/2020/07/15/ramit-sethi-how-to-plan-for-losing-your-job.html](https://www.cnbc.com/2020/07/15/ramit-sethi-how-to-plan-for-losing-your-job.html)   
-Includes “ATS” spreadsheet: [github.com/Effective-Immediately/](http://github.com/Effective-Immediately/)   
-CV: [https://blog.pragmaticengineer.com/the-pragmatic-engineers-resume-template/](https://blog.pragmaticengineer.com/the-pragmatic-engineers-resume-template/)   
-Beyond the Coding Interview: [https://bctci.co/free-chapters](https://bctci.co/free-chapters)   
-Trier Social Stress Test [https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers](https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers)
-System design prep: [Evan @ Hello Interview on system design round prep](https://www.reddit.com/r/leetcode/comments/1kt2b6z/how_to_prepare_for_system_design_interviews/)
-Pair coding problems: [github.com/guardian/coding-exercises](http://github.com/guardian/coding-exercises) 
+- Practicalities: [https://www.cnbc.com/2020/07/15/ramit-sethi-how-to-plan-for-losing-your-job.html](https://www.cnbc.com/2020/07/15/ramit-sethi-how-to-plan-for-losing-your-job.html)   
+- Includes “ATS” spreadsheet: [github.com/Effective-Immediately/](http://github.com/Effective-Immediately/)   
+- CV: [https://blog.pragmaticengineer.com/the-pragmatic-engineers-resume-template/](https://blog.pragmaticengineer.com/the-pragmatic-engineers-resume-template/)   
+- Beyond the Coding Interview: [https://bctci.co/free-chapters](https://bctci.co/free-chapters)   
+- Trier Social Stress Test [https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers](https://www.codepanion.dev/blog/take-home-vs-live-coding-which-assessment-finds-better-developers)
+- System design prep: [Evan @ Hello Interview on system design round prep](https://www.reddit.com/r/leetcode/comments/1kt2b6z/how_to_prepare_for_system_design_interviews/)
+- Pair coding problems: [github.com/guardian/coding-exercises](http://github.com/guardian/coding-exercises) 
+- Tom Dalling talk: https://www.youtube.com/watch?v=7cyx_88m2CM
