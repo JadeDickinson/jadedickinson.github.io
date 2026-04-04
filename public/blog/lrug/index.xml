@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Managing a job search efficiently on Jade Dickinson</title>
-    <link>http://localhost:62515/blog/lrug/</link>
+    <link>http://localhost:1313/blog/lrug/</link>
     <description>Recent content in Managing a job search efficiently on Jade Dickinson</description>
     <generator>Hugo</generator>
     <language>en-gb</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="http://localhost:62515/blog/lrug/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/blog/lrug/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
