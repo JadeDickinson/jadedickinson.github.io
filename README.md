@@ -9,6 +9,6 @@
 e.g. hugo new content building-a-repertoire/peking-roast-chicken/_index.md
 Export Google Doc to markdown and paste, remembering to check draft = false.
 5. Start the embedded web server with the command "hugo server --buildDrafts".
-
+6. TODO: Install matomo: https://matomo.org/faq/on-premise/installing-matomo/ see https://github.com/holehan/hugo-component-matomo?tab=readme-ov-file . Remember, needs cookie consent
 cd quickstart
 https://github.com/mrmierzejewski/hugo-theme-console
