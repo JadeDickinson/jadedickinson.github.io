@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jade Dickinson/blog/brighton-ruby-part-2/</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/terminal-0.7.4.min.css">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/animate-4.1.1.min.css">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/console.css">
+    
+      <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+       
+      <link href="http://localhost:1313/blog/brighton-ruby-part-2/index.xml" rel="alternate" type="application/rss+xml" title="Jade Dickinson" />
+    <meta property="og:title" content="Brighton Ruby Part 2" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/blog/brighton-ruby-part-2/" />
+
+
+<meta name="twitter:title" content="Brighton Ruby Part 2"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+<body class="terminal">
+    <div class="container">
+        <div class="terminal-nav">
+          <header class="terminal-logo">
+            <div class="logo terminal-prompt">
+              
+              
+              <a href="http://localhost:1313/" class="no-style ">Jade Dickinson</a>:~# 
+              <a href='http://localhost:1313/blog'>blog</a>/<a href='http://localhost:1313/blog/brighton-ruby-part-2'>brighton-ruby-part-2</a>/</div></header>
+          <nav class="terminal-menu">
+            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/">
+                    <span property="name">home</span></a>
+                    <meta property="position" content="1" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/blog/">
+                    <span property="name">blog</span></a>
+                    <meta property="position" content="2" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/building-a-repertoire/">
+                    <span property="name">food writing</span></a>
+                    <meta property="position" content="3" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/technical-talks/">
+                    <span property="name">technical talks</span></a>
+                    <meta property="position" content="4" />
+                </li>
+                
+            </ul>
+          </nav>
+        </div>
+    </div>
+
+    <div class="container " >
+        
+<h1>Brighton Ruby Part 2</h1>
+<br/>
+<p>Now that the conference videos are up, I thought I would continue sharing my thoughts and notes from the day.</p>
+<p>Another talk I really enjoyed was Maria Yudina’s talk comparing screenwriting and storytelling with codebase maintenance.</p>
+<h2 id="spoilers-ahead">Spoilers ahead</h2> <p>Maria gave a major spoiler warning for the Sixth Sense at the start of the talk. Even after that there were some quite funny protests on the day. Something to be aware of as this blog post will basically be my notes from the talk.</p>
+<p>It would be amiss at this point not to directly link you to the talk: <a href="https://www.youtube.com/watch?v=xy7CmdmJy1Y" target="_blank" rel="noopener">Code, Prompts, and Stories, Maria Yudina at Brighton Ruby 2026</a> .</p>
+<p><img src="maria-yudina-refactoring-is-editing.jpeg" alt="Refactoring is Editing " class="img-responsive"> </p>
+<h2 id="introduction">Introduction</h2> <ul>
+<li>Act 1 Code is Storytelling</li>
+<li>Act 2 The Edit is Refactoring</li>
+<li>Act 3 Prompts (are the future?)</li>
+</ul>
+<h1 id="act-1">Act 1</h1> <p>Show, don’t tell.</p>
+<p>Mad Max for example has no exposition</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Storytelling</th>
+          <th style="text-align: left">Ruby</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Scenes explain to audience</td>
+          <td style="text-align: left">A method name that almost doesn’t trust the audience to understand</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Mr Exposition turns to the camera and explains their plan</td>
+          <td style="text-align: left">Claude adds a lot of comments when it generates the code and they’re usually very redundant</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="how-to-improve">How to improve?</h3> <ul>
+<li>In screenwriting, good writers rely on action.</li>
+<li>In our case, <code>\#check\_if\_user\_can\_publish\_post(user, post)</code> becomes <code>\#publishable?(user, post)</code>.</li>
+<li>Aim for elegance - avoid “clever” metaprogramming, instead focus on making the code readable.</li>
+<li>Instead of heavily nested if conditionals, just use <code>user.active? &amp;&amp; user.editor? &amp;&amp; post.draft?</code></li>
+</ul>
+<h2 id="checkhovs-gun">Checkhov’s Gun</h2> <ul>
+<li>If there’s a gun in the scene it must be used. If Act 1, must go off by Act 3.</li>
+<li>There must be a payoff.</li>
+</ul>
+<h3 id="for-example-in-code">For example in code:</h3> <ul>
+<li>Idea of newing up unused objects. Could have been legacy.
+<ul>
+<li>Maybe an interface like an @audit_log = audit_log, several other as it turns out unused instance variables created on object instantiation.</li>
+</ul>
+</li>
+<li>Replace with short readable classes like OrderProcessor; #initialize(order): @order = order. #process: order.complete! See <a href="https://youtu.be/xy7CmdmJy1Y?si=N-6hZDu6rqkvhPQB&amp;t=350" target="_blank" rel="noopener">https://youtu.be/xy7CmdmJy1Y?si=N-6hZDu6rqkvhPQB&amp;t=350</a> 
+<ul>
+<li>This is easier to read</li>
+<li>Doesn’t make you assume anything</li>
+<li>Intentional - everything in this code should be there for a reason.</li>
+</ul>
+</li>
+<li>This reminded me of another great talk from Brighton Ruby, referencing Marie Kondo: <a href="https://brightonruby.com/2019/life-changing-magic-of-tidying-technical-debt-sroop-sunar/" target="_blank" rel="noopener">https://brightonruby.com/2019/life-changing-magic-of-tidying-technical-debt-sroop-sunar/</a> </li>
+</ul>
+<h3 id="every-scene-must-have-a-change">Every Scene must have a change</h3> <ul>
+<li>If a scene doesn’t have a change it shouldn’t be in the script
+<ul>
+<li>A character could change</li>
+<li>A dynamic or power dynamic could change</li>
+</ul>
+</li>
+<li>Scenes should be intentional - they must be present for the story to make sense.</li>
+</ul>
+<h1 id="the-edit-is-the-refactor">The edit is the refactor</h1> <ul>
+<li>Writing is reusing</li>
+<li>Comparing writing to refactoring</li>
+<li>The first draft is a prototype. Improves clarity.</li>
+<li>Kill your darlings - no confirmed origin. Faulkner? Stephen King?</li>
+<li>This became key to screenwriting in the 90s.</li>
+<li>Goodwill Hunting - character driven drama movie</li>
+</ul>
+<h2 id="saved-in-the-edit-room">Saved in the edit room</h2> <ul>
+<li>Star Wars original cut</li>
+<li>YouTube video about this
+<ul>
+<li>Changed pacing of movies</li>
+<li>Moved things around</li>
+</ul>
+</li>
+<li>Changed on last step production</li>
+<li>Oscar for Editing - Marcia Lucas</li>
+</ul>
+<h2 id="refactoring-and-editing">Refactoring and editing</h2> <ul>
+<li>AI can generate a first draft in seconds. <em>More code is not better code</em>.</li>
+<li>The developer&rsquo;s job has shifted from writing to editing (architecting)</li>
+<li>You are responsible for every line [contrasted agaisnt: don&rsquo;t ask me, I didn&rsquo;t write it]</li>
+<li>Can I tell this story more cleanly</li>
+<li>Code smell: 8 argos</li>
+<li>Similar to cutting a line, simplifying the plot and cutting scenes</li>
+</ul>
+<h2 id="apply-to-other-technical-work">Apply to other technical work</h2> <ul>
+<li>Technical design docs: does every section earn its place?</li>
+<li>PR descriptions: does the <em>reviewer</em> know what changed and why?</li>
+<li>Project updates: does the reader&rsquo;s understanding change by the end?</li>
+</ul>
+<p><img src="maria-yudina-apply-to-other-areas.jpeg" alt="Improve in the edit" class="img-responsive"> </p>
+<h2 id="spoilers">[SPOILERS]</h2> <h2 id="plot-twist-i-dont-want-my-code-to-surprise-people">Plot Twist: I don’t want my code to surprise people</h2> <ul>
+<li>Sixth Sense: dead all along</li>
+<li>Bruce invisible to anyone else</li>
+<li>A plot twist - or intentional, planned from the beginning.</li>
+<li>When we code we should know where we plan to get.</li>
+</ul>
+<h1 id="act-3">Act 3</h1> <ul>
+<li>Usually very difficult to do in films.</li>
+<li>Ruby significantly closer to natural language than other programming languages.</li>
+<li>Prompts as orchestration step by step
+<ul>
+<li>Make a plan</li>
+<li>Create a spec</li>
+<li>Split off</li>
+<li>Do different tasks</li>
+</ul>
+</li>
+</ul>
+<p>References</p>
+<ul>
+<li>Maria Yudina edited AI Engineering book</li>
+<li>Screenwriting: learn about it and you can annoy your friends by spoiling movies!</li>
+</ul>
+<p><img src="maria-yudina-brighton-ruby-further-reading.jpeg" alt="Further Reading in Screenwriting and AI Engineering / Refactoring " class="img-responsive"> </p>
+
+
+<div class="posts-list">
+
+</div>
+
+
+        <div class="footer">
+    Powered by <a href="https://gohugo.io/">Hugo</a> with
+    <a href="https://github.com/mrmierzejewski/hugo-theme-console/">Console Theme</a>. 
+</div>
+
+    </div>
+  </body>
+</html>
