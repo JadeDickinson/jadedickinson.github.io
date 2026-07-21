@@ -4,7 +4,7 @@ draft = false
 title = 'Brighton Ruby, part one'
 +++
 
-My work, Dentally, sent a healthy contingent down for Brighton Ruby this year. First up after the keynote was the talk I was most looking forward to. You’ll appreciate why if you look at the titles on my technical talks page. It was a talk about how to use flamegraphs to find performance problems.
+My work sent a healthy contingent down for Brighton Ruby this year. First up after the keynote was the talk I was most looking forward to. You’ll appreciate why if you look at the titles on my technical talks page. It was a talk about how to use flamegraphs to find performance problems.
 
 The talk will be released soon on Ruby Events: [Performance Engineering for Everyone \- Elena Tănăsoiu and Emma Gabriel](https://www.rubyevents.org/talks/performance-engineering-for-everyone?back_to=%2Fevents%2Fbrightonruby-2026%2Ftalks%3Fscroll_top%3D1216&back_to_title=Brighton+Ruby+2026)
 
