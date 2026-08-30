@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jade Dickinson/blog/range-on-rails/</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/terminal-0.7.4.min.css">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/animate-4.1.1.min.css">
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/console.css">
+    
+      <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+       
+      <link href="http://localhost:1313/blog/range-on-rails/index.xml" rel="alternate" type="application/rss+xml" title="Jade Dickinson" />
+    <meta property="og:title" content="Range on Rails" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/blog/range-on-rails/" />
+
+
+<meta name="twitter:title" content="Range on Rails"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+<body class="terminal">
+    <div class="container">
+        <div class="terminal-nav">
+          <header class="terminal-logo">
+            <div class="logo terminal-prompt">
+              
+              
+              <a href="http://localhost:1313/" class="no-style ">Jade Dickinson</a>:~# 
+              <a href='http://localhost:1313/blog'>blog</a>/<a href='http://localhost:1313/blog/range-on-rails'>range-on-rails</a>/</div></header>
+          <nav class="terminal-menu">
+            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/">
+                    <span property="name">home</span></a>
+                    <meta property="position" content="1" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/blog/">
+                    <span property="name">blog</span></a>
+                    <meta property="position" content="2" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/building-a-repertoire/">
+                    <span property="name">food writing</span></a>
+                    <meta property="position" content="3" />
+                </li>
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="http://localhost:1313/technical-talks/">
+                    <span property="name">technical talks</span></a>
+                    <meta property="position" content="4" />
+                </li>
+                
+            </ul>
+          </nav>
+        </div>
+    </div>
+
+    <div class="container " >
+        
+<h1>Range on Rails</h1>
+<br/>
+<p>Notes on Umeda Tomohiro’s KaigiOnRails 2025 talk - Range on Rails: How PostgreSQL Multirange Simplifies Complex Booking Logic</p>
+<p>In July I spent some time digging through past KaigiOnRails schedules while working on a CFP application. I found this talk by Umeda Tomohiro of Rizap Technologies. His talk focused on how to build a reservation system without fixed-length time slots. I was interested in understanding the approach as I’d seen the same problem solved differently by colleagues.</p>
+<p>My highlights were: calculating availability by subtracting unavailable time ranges; understanding how to apply PostgreSQL’s multirange feature; and learning how to implement this maintainably in Rails.</p>
+<p>Below are my notes from his talk. I used YouTube’s translation features and Google Translate for screenshots of some slides.</p>
+<p>Umeda Tomohiro - 梅田智大<br>
+Links:</p>
+<ul>
+<li><a href="https://kaigionrails.org/2025/talks/umeda-rizap/" target="_blank" rel="noopener">https://kaigionrails.org/2025/talks/umeda-rizap/</a> </li>
+<li><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake</a> </li>
+<li><a href="https://www.youtube.com/watch?v=FjTkun7Sv78" target="_blank" rel="noopener">https://www.youtube.com/watch?v=FjTkun7Sv78</a> </li>
+<li><a href="https://github.com/umeda-rizap" target="_blank" rel="noopener">https://github.com/umeda-rizap</a> </li>
+<li><a href="https://www.postgresql.org/docs/current/rangetypes.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/current/rangetypes.html</a> </li>
+<li><a href="https://www.postgresql.org/docs/current/functions-range.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/current/functions-range.html</a> </li>
+</ul>
+<p>&ldquo;<em>The new “multi-range type” option dramatically simplifies complex logic.</em>
+<em>chocoZAP - the story of creating a reservation system</em></p>
+<ul>
+<li>We’ve been working on a system to redesign chocoZAP’s reservation system this year.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=3" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=3</a> <br>
+<img src="image1.png" alt="" class="img-responsive"> 
+<em>How a general reservation system works: (1) Set aside a fixed reservation slot (2) User selects a slot and makes a reservation</em></p>
+<ul>
+<li>So a typical, standard reservation system basically involves setting up fixed reservation slots in advance.</li>
+<li>For example, a 12:00 slot or a 1:00PM slot, and the user selects a slot and makes a reservation. That’s how a typical reservation system wors.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=4" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=4</a> <br>
+<img src="image2.png" alt="" class="img-responsive"> <br>
+<em>Features of chocoZAP’s reservation system</em></p>
+<ul>
+<li><em>24 unmanned operation</em></li>
+<li><em>Users want to use it casually during their free time</em></li>
+<li><em>We want to make it possible to “book at any time you like”</em></li>
+</ul>
+<p><em>In other words… a reservation system that isn’t bound by time slots!</em></p>
+<ul>
+<li>However, one of the features of chocoZap’s reservation is that chocoZap is a 24-hour unmanned convenience store gym and we want users to be able to use it easily in their spare time.</li>
+<li>For example there are cases where you might have a little free time in 30 minutes and you want to use that time to make a reservation, and use chocoZap.</li>
+<li>So instead of setting up fixed time slots in advance we needed to create a reservation system where people could freely book at any time they liked - in other words, a reservation system without fixed time slots.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=5" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=5</a> <br>
+<em><img src="image3.jpg" alt="" class="img-responsive"> </em><br>
+<em>The difficulty of a reservation system without available slots</em> - <em>Translated using Google Translate to preserve flowchart structure.</em></p>
+<ul>
+<li>However, creating a reservation system without pre-defined slots is quite difficult.</li>
+<li>For example, in a reservation system with pre-defined slots, you can determine whether a reservation is actually possible by checking whether the slot is open or full. It’s a simple binary decision.</li>
+<li>So, in the case of a reservation system that doesn’t have a fixed time slot; for example, when trying to determine whether a reservation can be made in 30 minutes, you have to consider whether another user has already made a reservation at that time, or whether the store is temporarily closed and reservations cannot be made during that period, or whether the store is open but the machine is broken and reservations cannot be made temporarily.</li>
+<li>In such cases, you have to check all these various conditions under which reservations cannot be made in order to actually determine whether a reservation can be made.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=6" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=6</a> <br>
+<img src="image4.png" alt="" class="img-responsive"> <br>
+<em>Even if there are no available slots, I’d like to see a list of available slots. Since there is no physical “slot” system, creating a list of available slots is extremely difficult.</em></p>
+<ul>
+<li>So, although there are no available slots, there is a request to be able to see the availability and booking status for the past week on a list screen like this.</li>
+<li>Well, I’d like to see a list of available times so I can see which time slots are already booked and which ones are available for booking.</li>
+<li>But there aren’t any slots available, so figuring out how to display a screen like this is a very difficult task.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=7" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=7</a> <br>
+<img src="image5.png" alt="" class="img-responsive"> <br>
+<em>The breakthrough is “scope”. By treating the periods during which reservations are unavailable as a set of ranges and calculating the difference between these ranges and the target period, we can determine whether a reservation is possible.</em></p>
+<ul>
+<li>So, after much trial and error and consideration, I arrived at the idea of a scope.</li>
+<li>I can’t make a reservation, so I want to check the reservation by treating various rough time periods as a set of ranges, and by finding the left set with the target period, I can drive the period during which reservations are possible.</li>
+<li>Well by taking this approach, we were able to simplify this complex logic.</li>
+<li>So today I’d like to talk about this in more detail.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=8" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=8</a> </p>
+<ul>
+<li>Let me introduce myself.</li>
+<li>I’m a backend engineer at RIZUP Technologies</li>
+<li>I’m mainly in charge of system development and operation for ChocoZAP, the convenience store management app for beginners.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=9" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=9</a> </p>
+<ul>
+<li>So since ChocoZap has stores all over the country, we are mainly in charge of development that is unique to having physical stores all over the country, such as understanding the real-time situation of each store nationwide, delivering information to customers, managing data, and also developing a system to optimize and manage store resources by linking these various pieces of equipment in the stores using IoT, and also developing the reservation system that I will talk about today.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=10" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=10</a> </p>
+<ul>
+<li>Back to the main topic.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=11" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=11</a> <br>
+<img src="image6.png" alt="" class="img-responsive"> 
+<em>What does it mean to consider something as a “set of ranges”?</em></p>
+<ul>
+<li>
+<p><em>Consider the conditions under which you cannot make a reservation again.</em></p>
+<ul>
+<li><em>I already have another reservation	-&gt; X 27/9/2025 10:00~11:00</em></li>
+<li><em>Store is closed				-&gt; X 28/9/2025 ~ 29/9/2025</em></li>
+<li><em>Room is under maintenance		-&gt; X 27/9/2025 02:00~09:00</em></li>
+</ul>
+</li>
+<li>
+<p><em>When we re-examined the seemingly complex conditions for making reservations impossible, we discovered a common thread; “a period with a start and end date”.</em></p>
+</li>
+<li>
+<p>Earlier I talked about how we can view the various conditions under which reservations cannot be made as a set of ranges.</p>
+</li>
+<li>
+<p>What this means is that we will take another look at the various conditions under which reservations cannot be made.</p>
+</li>
+<li>
+<p>Well, there are various reasons why you can’t make a reservation, such as the store being closed or other such conditions.</p>
+</li>
+<li>
+<p>But in any case, there is a period of time where you can’t make a reservation. For example, if a user has already made a reservation, it will say that the user has made a reservation from a certain time or a certain time and that time slot cannot be reserved.</p>
+</li>
+<li>
+<p>Also, if the store is closed, it will say that reservations cannot be made from a certain time to a certain time, and the store is closed, and that time slot cannot be reserved.</p>
+</li>
+<li>
+<p>There are many different conditions like this, and they all have a period from start to finish, and although there are many different conditions, we found a common thread that they are all periods.</p>
+</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=12" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=12</a> <br>
+<img src="image7.png" alt="" class="img-responsive"> <br>
+<img src="image8.jpg" alt="" class="img-responsive"> 
+<em>The period during which reservations cannot be made is defined as the “range”</em> - shown here as circles outlined with dotted lines.</p>
+<ul>
+<li>So I thought that if we replaced this “period” with a “range”, we could simplify the logic and so we’ll convert these various periods when reservations are unavailable into ranges.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=13" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=13</a> <br>
+<img src="image9.png" alt="" class="img-responsive"> <br>
+<img src="image10.jpg" alt="" class="img-responsive"> 
+<em>The period covered is also a scope -</em> shown here as the shaded green circle marked “target period”</p>
+<ul>
+<li>So for example, if you want to check the availability of reservations for the next week, you would replace this “one week” period with a range.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=14" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=14</a> <br>
+<img src="image11.png" alt="" class="img-responsive"> 
+<em>“Find the set difference of the ranges” - between shaded in blue the Period when reservations cannot be made, and in green the 1 week period covered.</em></p>
+<ul>
+<li>So, by doing this, if we find the left set of this one-week period and various other periods when reservations are not possible…</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=15" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=15</a> <br>
+<img src="image12.png" alt="" class="img-responsive"> 
+<em>Results of finding the “set difference” - in the remaining range, reservations are open!</em></p>
+<ul>
+<li>The remaining range is the period when reservations are possible.</li>
+<li>So by doing this, although there are various conditions under which reservations cannot be made, we thought that the period during which reservations are possible could be determined in one go, so we decided to take this approach and proceed with development.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=16" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=16</a> <br>
+<img src="image13.png" alt="" class="img-responsive"> <br>
+<em>PostgreSQL’s Range Type cannot handle fragmented ranges.</em></p>
+<ul>
+<li><em>The result of the set different is multiple separated ranges.</em></li>
+<li><em>The Range type can only handle a single contiguous range, so this will result in an error.</em></li>
+</ul>
+<p><em>Example: Subtract “12:10~12:40” from “12:00~13:00”.</em></p>
+<ul>
+<li><em>tsrange(‘2025-09-26 12:00’, ‘2025-09-26 13:00’) - tsrange(‘2025-09-26 12:10’, ‘2025-09-26 12:40’);</em></li>
+</ul>
+<p><em>The results are divided into “12:00~12:10” and “12:40~13:00”.</em></p>
+<ul>
+<li>
+<p><em>Multiple ranges cannot be handled with the range type and will result in an error.</em></p>
+</li>
+<li>
+<p><em>ERROR: result of range difference would not be contiguous.</em></p>
+</li>
+<li>
+<p>However, there is one problem here.</p>
+</li>
+<li>
+<p>PostgreSQL’s usual range type, can’t handle segmented ranges.</p>
+</li>
+<li>
+<p>So what I mean is when you take the left set and find the period during which reservations are possible, for example, you can make a reservation from 12:00 to 13:00.</p>
+</li>
+<li>
+<p>However you can’t make a reservation between 1pm and 2pm. But you can make a reservation from 2pm to 3pm.</p>
+</li>
+<li>
+<p>So I think the reservation period is scattered across multiple time slots.</p>
+</li>
+<li>
+<p>However a typical range-type calculator can only handle one continuos range, so when you have multiple scattered ranges like this, it actually results in an error.</p>
+</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=17" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=17</a> <br>
+<img src="image14.png" alt="" class="img-responsive"> 
+<em>The optimal solution is a “multi-range type”</em><br>
+<em>That’s where the idea of multirange comes in. Multiple fragmented ranges can be treated as a single data point.</em></p>
+<ul>
+<li>So, what I ultimately arrived at was the multi-range type.</li>
+<li>The multi-range type allows you to treat multiple divided ranges as a singel data point.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=18" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=18</a> <br>
+<em><img src="image15.png" alt="" class="img-responsive"> </em><br>
+<em>What is a “multi-range type” in PostgreSQL?</em></p>
+<ul>
+<li>
+<p><em>A data type that can handle multiple ranges together, like an array.</em></p>
+</li>
+<li>
+<p><em>There are multiple types depending on the range:</em></p>
+<ul>
+<li><em>Int4multirange</em></li>
+<li><em>datemultirange</em></li>
+<li><em>tsmultirange</em></li>
+</ul>
+</li>
+<li>
+<p>To put it more simply, it’s a data type that’s similar to how multiple ranges are crammed into a single array.</p>
+</li>
+<li>
+<p>Depending on the type of range, there are also different types of multiple overlapping ranges.</p>
+</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=19" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=19</a> <br>
+<img src="image16.png" alt="" class="img-responsive"> 
+<em>Multiple range types can use the same operations as range types. Just like with range types, you can handle overlap, intersection and difference!</em></p>
+<ul>
+<li>So this multi-range type, well, just like a regular range type, can be used with operations.</li>
+<li>For example, you can determine whether two ranges overlap, extract only the overlapping parts to find a set of <em>stones</em>, or conversely, extract the parts that don’t overlap, the left set.</li>
+<li>You can use operations on these ranges just like with regular range types.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=20" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=20</a> <br>
+<img src="image17.png" alt="" class="img-responsive"> <br>
+<em>Create a list of available reservations using the “multi-range type”</em><br>
+<em>1 Consolidate multiple periods that are unavailable for booking into multiple timeframes.</em><br>
+<em>2 The period for checking availability is also converted to a multi-range</em><br>
+<em>3 Calculate the available reservation period using the set different method</em></p>
+<ul>
+<li>So since we have all the necessary tools, I think we can use a multi-range method to find a list of available reservation periods using the original range and the left set of ranges.</li>
+<li>We’ll do this in three steps.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=21" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=21</a> <br>
+<img src="image18.png" alt="" class="img-responsive"> 
+<em>Consolidate multiple periods that are unavailable for booking into multiple timeframes.</em></p>
+<ul>
+<li><em>We will consolidate multiple periods during which reservations are unavailable, such as existing reservation periods, store closure periods, and room maintenance periods, into a single overlapping timeframe.</em></li>
+</ul>
+<p>Step 1</p>
+<ul>
+<li>First, as the first step, we will combine the multiple periods during which reservations are unavailable into a single overlapping period.</li>
+<li>We’ll just cram all those periods when reservations can’t be made - like existing user reservations, store closures, room maintenance periods, etc, into one more multi-layered timeframe.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=22" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=22</a> <br>
+<img src="image19.png" alt="" class="img-responsive"> 
+<em>The period for checking availability has also been converted to a multi-range scope.</em><br>
+<em>Since the set difference operation is only possible between multiple ranges, the time period to check availability is also converted to a multiple range.</em></p>
+<ul>
+<li>Next, as step 2, if you want to check the availability for the past week, you convert this one-week period into a multi-range period.</li>
+<li>Well, a week is a single continuous period, but since multi-range operations require that both values be of multi-range type, we convert this one week period into a multi-range.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=23" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=23</a> <br>
+<img src="image20.png" alt="" class="img-responsive"> 
+<em>Calculate the available reservation period using the set difference method!</em></p>
+<ul>
+<li>
+<p><em>Calculate the difference between the multiple ranges of periods for which unavailability can be checked and the multiple ranges of periods for which reservations are unavailable!</em></p>
+</li>
+<li>
+<p><em>The result of the set difference will be the period during which reservations are possible.</em></p>
+</li>
+<li>
+<p>And finally, the third step.</p>
+</li>
+<li>
+<p>By taking the left set of this overlapping range of “one week” and the overlapping range that combines various periods when reservations are not possible, we were able to instantly derive a list of periods when reservations are possible.</p>
+</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=24" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=24</a> <br>
+<img src="image21.png" alt="" class="img-responsive"> 
+<em>The “mutli-range type” has a variety of applications</em></p>
+<ul>
+<li><em>Subscription usage period (multiple periods including suspension and resumption)</em></li>
+<li><em>Attendance shift management (managing work, break, and overtime times collectively</em></li>
+<li><em>Content distribution/viewing time aggregation (multi-segment aggregation of viewing sessions)</em></li>
+<li><em>Inventory and loan management (calculating vacancy periods using a difference-based approach based on loans and returns)</em></li>
+<li><em>System failure occurrence and recovery time management (including calculation of failure rate).</em></li>
+</ul>
+<p><em>When aggregating data across multiple disparate time periods, the multirange approach may prove very useful.</em></p>
+<ul>
+<li>So, we’ve been talking about reservation systems up until now, and as I’ve just explained, I think the multi-range type is extremely effective in this reservation system, but I also think this multi-range type can be used in various other situations besides reservation systems, so I’ve put together this slide.</li>
+<li>I’ve written about various things but basically I think that the multi-range type will be very useful in situations where you want to somehow aggregate data from multiple periods, even if it’s a bit rough.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=25" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=25</a> </p>
+<ul>
+<li>So now that we understand multi-range types, I’d like to talk about how to handle these multi-range types in Rails.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=26" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=26</a> <br>
+<img src="image22.png" alt="" class="img-responsive"> 
+<em>Multi-range types are easier to handle when expected</em><br>
+<em>A “multi-range type” is a data type that groups multiple ranges together.</em><br>
+<em>It becomes easier to handle when expanded into individual areas.</em></p>
+<ul>
+<li>So, when dealing with this multi-range type in Rails, it’s easier to handle if you expand it into multiple ranges.</li>
+<li>Well, that’s because if you retrieve this multi-range data through ActiveRecord in Rails, you’ll get just a simple string back.</li>
+<li>However, I think it can be quite difficult to handle when a string is returned.</li>
+<li>Well, multi-range types do become strings, but with regular range types, the data can be obtained by mapping it to a range object, so I think it’s easier to handle.</li>
+<li>As I mentioned earlier, a multi-range type is a data type that packs multiple ranges into a single array, so if we expand it into multiple individual ranges, we can treat it as a regular range object, which I think makes writing code easier.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=27" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=27</a> <br>
+<img src="image23.png" alt="" class="img-responsive"> 
+<em>Use PostgreSQL’s convenient functions to convert ranges!</em><br>
+<em>Range_agg:	“Combine multiple ranges into a single multi-range range”</em><br>
+<em>Unnest:	“Expanding one multi-range to ‘multiple ranges’”</em></p>
+<ul>
+<li>PostgreSQL provides convenient functions for expanding and aggregating these multi-ranges.</li>
+<li>For example, using the Range Aggregate - range_agg - function, you consolidate multiple disorganised ranges into a single multi-range.</li>
+<li>Conversely, using the <em>unnested</em> function, we can expand this single multi-range into multiple separate ranges.</li>
+<li>Therefore, I think it would be a good idea to use like Range Aggregate or Unnested to convert the data into a format that is easy to handle in Rails.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=28" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=28</a> <br>
+<img src="image24.png" alt="" class="img-responsive"> 
+<em>Multiple ranges are best used exclusively for aggregation!</em><br>
+<em>Each record is stored as a range</em><br>
+<em>Aggregation into multiple range types during aggregation</em><br>
+<em>Expanding the result and treating it as a range type simplifies the code</em></p>
+<ul>
+<li>I recommend using this multi-range feature specifically for summary lines.</li>
+<li>The reason is, if you try to manage the various periods when reservations cannot be made in the database using multiple ranges, like trying to manage the reservations of various users or the closure periods of various stores in a single multiple range, it wold be quite difficult to update or manipulate the data when a user’s reservation is canceled or a store’s closure period is extended.</li>
+<li>So in reality, each table has data where each record represents one period and one range, and then when you want to perform some kind of aggregation, you consolidate it into multiple ranges.</li>
+<li>So, I think that by aggregating results and then spreading them out into individual, separate ranges, it becomes easier to handle.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=29" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=29</a> <br>
+<img src="image25.png" alt="" class="img-responsive"> <br>
+<em>Simplify your code using SQL View</em></p>
+<ul>
+<li>
+<p><em>Multirange types are not supported in Rails</em></p>
+<ul>
+<li><em>Trying to handle things with ActiveRecord tends to make things more complex</em></li>
+</ul>
+</li>
+<li>
+<p><em>Complex aggregation processes are confined to SQL views [?]</em></p>
+<ul>
+<li><em>Handling multirange types can be done entirely with SQL</em></li>
+</ul>
+</li>
+<li>
+<p><em>Simplify your code by creating a VIEW-based model</em></p>
+<ul>
+<li><em>Rails allows you to handle multiple ranges without having to be aware of them.</em></li>
+</ul>
+</li>
+<li>
+<p>Now, I think this is something that people will have different opinions on, and it’s just my personal preference, but I think that using SQL View for this aggregation process will make the process simpler.</p>
+</li>
+<li>
+<p>So, if you use SQL Views, there are still various issues, such as how to maintain these views, but I think there aren’t that many situations where you want to use multiple ranges to perform complex aggregations.</p>
+</li>
+<li>
+<p>Well, for example, even if there is one system like this reservation system, I think there are only one or two locations at most, so the complexity of the SQL there can be handled with this SQL view, and in Rails, or rather Ruby, if you handle only the final aggregated result as an object, I think the code will be easier to write and easier to read.</p>
+</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=30" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=30</a> <br>
+<img src="image26.png" alt="" class="img-responsive"> 
+<em>Example of aggregation using VIEW</em><br>
+<em>Group unavailable periods into multirange - Aggregate available periods using the difference set - Expand multirange into range</em><br>
+<em>Key</em></p>
+<ol>
+<li><em>Consolidate the periods when reservations cannot be made into a single table using UNION</em>
+<ol>
+<li><em>Existing reservation</em></li>
+<li><em>Room maintenance</em></li>
+<li><em>Store closure</em></li>
+</ol>
+</li>
+<li><em>Group unavailable items into “multirange” using range_agg</em></li>
+<li><em>1-week range - Unavailable range = Available range</em></li>
+<li><em>Unnest the multirange to create individual free periods (tsrange)</em></li>
+</ol>
+<ul>
+<li>So, here’s an example of how to collect data using SQL views.</li>
+<li>Well, I’ve written a lot of jumbled stuff, but basically, as I mentioned earlier, I’ve consolidated all the periods where reservations can’t be made into one multi-range.</li>
+<li>Then I’ve taken the left set, performed the calculations, and finally, I’ve used the unsent feedback to expand on the resulting multi-range.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=31" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=31</a> <br>
+<img src="image27.png" alt="" class="img-responsive"> 
+<em>Creating a Model that corresponds to the View  simplifies the code!</em><br>
+<em>3) How to use</em><br>
+<em>Room.reservation_availabilities =&gt; List of available reservation periods</em></p>
+<ul>
+<li>So, by using this SQL View, we can ultimately create a model for this view, and as you can see at the very bottom of the usage section at the bottom of this slide, when we finally make a model named like RoomAvailability, we can get a list of objects that have this reservable period.</li>
+<li>And by doing this, I think the code will become simpler and easier to use.</li>
+</ul>
+<p><a href="https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=32" target="_blank" rel="noopener">https://speakerdeck.com/rizap_tech/range-on-rails-duo-zhong-fan-wei-xing-toiuxin-tanaxuan-ze-zhi-ga-fu-za-rozitukuwoju-de-nisinpurunisitawake?slide=32</a> <br>
+<img src="image28.png" alt="" class="img-responsive"> 
+<em>Summary</em></p>
+<ul>
+<li>
+<p><em>By using mathematical thinking about ranges, the code becomes dramatically simpler</em></p>
+</li>
+<li>
+<p><em>Using multi-range types allows you to handle multiple separated ranges</em></p>
+</li>
+<li>
+<p><em>Multiple range types are used exclusively for aggregation, and expanding the results into range types makes them easier to handle in Rails.</em></p>
+</li>
+<li>
+<p>So to summarize, I think that by using this mathematical thinking about ranges, there are situations where the degree of complexity becomes dramatically simpler.</p>
+</li>
+<li>
+<p>So, when performing aggregations using these kinds of ranges, having a multi-range type allows you to handle multiple ranges simultaneously.</p>
+</li>
+<li>
+<p>And this multi-range approach, well, is used specifically for aggregation, and the final result obtained can then be expanded into individual ranges and treated as a range object, which I think makes the code easier to read and write.&rdquo;</p>
+</li>
+</ul>
+
+
+<div class="posts-list">
+
+</div>
+
+
+        <div class="footer">
+    Powered by <a href="https://gohugo.io/">Hugo</a> with
+    <a href="https://github.com/mrmierzejewski/hugo-theme-console/">Console Theme</a>. 
+</div>
+
+    </div>
+  </body>
+</html>
